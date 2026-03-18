@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login - MedBridge</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='med-logo.png') }}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #FCF5F5; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .login {
+            background-color: white;
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 40px; 
+            border-radius: 10px;
+            box-sizing: border-box;
+            width: 400px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .login-title { font-weight: bold; color: #B71C1C; margin-bottom: 10px; font-size: 28px; }
+        .login-subtitle { font-size: 14px; color: #666; margin-bottom: 30px; font-weight: 500; }
+        .input-group { margin-bottom: 20px; }
+        .form-control { padding: 10px; border-radius: 8px; }
+        .form-control:focus { border-color: #B71C1C; box-shadow: 0 0 5px rgba(27, 94, 32, 0.3); }
+        .btn-danger { width: 100%; padding: 12px; font-weight: bold; margin-top: 10px; border-radius: 8px; background-color: #B71C1C; border: none; }
+        .btn-danger:hover { background-color: #880E4F; }
+    </style>
+</head>
+<body>
+
+<div class="login">
+    <form action="/login" method="POST">
+        <div class="login-title">MedBridge Secure</div>
+        <div class="login-subtitle">🔒 Verified Pharmacy & Clinic Portal</div>
+
+        {% if msg %}
+        <div class="alert alert-danger" style="font-size: 14px; padding: 10px; font-weight: bold;">
+            {{ msg }}
+        </div>
+        {% endif %}
+
+        <div class="input-group">
+            <input class="form-control" name="email" type="email" placeholder="Registered Email Address" required>
+        </div>
+
+        <div class="input-group">
+            <input class="form-control" name="password" type="password" placeholder="Password" required>
+        </div>
+
+        <div>
+             <button class="btn btn-danger" type="submit">Secure Login</button>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 14px;">
+            Not part of the network yet? <br>
+            <a href="{{ url_for('register') }}" style="color: #B71C1C; font-weight: bold; text-decoration: none;">Apply for Access Here</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

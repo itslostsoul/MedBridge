@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Registration - MedBridge</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='med-logo.png') }}">
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; background-color: #FCF5F5; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', sans-serif; }
+        .registration { background-color: white; border: 1px solid #ccc; text-align: left; padding: 40px; border-radius: 10px; width: 450px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .register-title { font-weight: bold; color: #333; margin-bottom: 25px; font-size: 28px; text-align: center; }
+        .form-label { font-size: 15px; font-weight: 600; color: #B71C1C; margin-bottom: 8px; }
+        .form-control { padding: 10px; border-radius: 8px; }
+        .form-control:focus { border-color: #B71C1C; box-shadow: 0 0 5px rgba(27, 94, 32, 0.3); }
+        .btn-danger { width: 100%; padding: 12px; font-weight: bold; margin-top: 15px; border-radius: 8px; }
+        .privacy-hint { font-size: 12px; color: #666; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="registration">   
+    <form action="/register" method="POST">
+        <div class="register-title">Join MedBridge</div>
+
+        {% if msg %}
+        <div id="errorBox" class="alert alert-danger text-center" role="alert" style="padding: 10px; font-size: 14px; font-weight: bold;">
+            ⚠️ {{ msg }}
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label">I represent a...</label>
+            <select class="form-control" name="role" id="roleSelect" required onchange="updateForm(); hideError();">
+                <option value="" disabled {% if not request.form.role %}selected{% endif %}>Select your role</option>
+                <option value="donor" {% if request.form.role == 'donor' %}selected{% endif %}>Pharmacy / Distributor</option>
+                <option value="recipient" {% if request.form.role == 'recipient' %}selected{% endif %}>Free Clinic / Local Hospital</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" id="nameLabel">Organization Name</label>
+            <input class="form-control" name="full_name" id="nameInput" type="text" placeholder="Enter organization name" 
+                   value="{{ request.form.full_name }}" required oninput="hideError()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" id="idLabel">License ID</label>
+            <input class="form-control" name="license_id" id="idInput" type="text" placeholder="Select role first..." 
+                   value="{{ request.form.license_id }}" required oninput="hideError()">
+            <div class="privacy-hint" id="privacyHint">We encrypt your data for safety. 🔒</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input class="form-control" name="email" type="email" placeholder="e.g. contact@pharmacy.com" 
+                   value="{{ request.form.email }}" required oninput="hideError()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input class="form-control" name="password" type="password" placeholder="Create a password" required oninput="hideError()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input class="form-control" name="confirm_password" type="password" placeholder="Repeat password" required oninput="hideError()">
+        </div>
+
+        <div>
+             <button class="btn btn-danger" type="submit">Create Account</button>
+        </div>
+
+        <div style="margin-top: 15px; font-size: 14px; text-align: center;">
+            Already have an account? 
+            <a href="{{ url_for('login') }}" style="color: #B71C1C; font-weight: bold;">Login Here</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function hideError() {
+        var box = document.getElementById("errorBox");
+        if (box) { box.style.display = 'none'; }
+    }
+
+    function updateForm() {
+        var role = document.getElementById("roleSelect").value;
+        var nameLabel = document.getElementById("nameLabel");
+        var nameInput = document.getElementById("nameInput");
+        var idLabel = document.getElementById("idLabel");
+        var idInput = document.getElementById("idInput");
+        var privacyHint = document.getElementById("privacyHint");
+
+        if (role === "donor") {
+            nameLabel.innerHTML = "Pharmacy / Supplier Name";
+            nameInput.placeholder = "e.g. Apollo Pharmacy";
+            idLabel.innerHTML = "Drug License Number";
+            if (!idInput.value) idInput.placeholder = "e.g. TN-12345-D"; 
+            privacyHint.innerHTML = "Required for legal transfer documentation.";
+        } else if (role === "recipient") {
+            nameLabel.innerHTML = "Clinic / NGO Name";
+            nameInput.placeholder = "e.g. City Care Free Clinic";
+            idLabel.innerHTML = "Medical Registration No.";
+            if (!idInput.value) idInput.placeholder = "e.g. Reg-98765"; 
+            privacyHint.innerHTML = "We verify this to ensure secure distribution.";
+        }
+    }
+    window.onload = function() { if (document.getElementById("roleSelect").value) { updateForm(); } };
+</script>
+</body>
+</html>

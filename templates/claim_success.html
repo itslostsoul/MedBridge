@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Transfer Initiated</title>
+    <style>
+        body { background-color: #FCF5F5; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .qr-card { background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .qr-image { margin: 20px 0; border: 4px solid #B71C1C; border-radius: 10px; padding: 10px; }
+        .btn-home { background-color: #B71C1C; color: white; border-radius: 20px; padding: 10px 30px; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="qr-card">
+        <h2 style="color: #B71C1C; font-weight: bold;">Medication Claimed! ✅</h2>
+        <p>Show this QR code to the pharmacy at pickup to verify the secure transfer.</p>
+        
+        <img class="qr-image" src="{{ url_for('generate_qr', med_id=med_id) }}" alt="QR Code">
+        
+        <br>
+        <a href="{{ url_for('dashboard') }}" class="btn-home">Back to Dashboard</a>
+    </div>
+</body>
+</html>
