@@ -11,7 +11,7 @@ app.config['MYSQL_HOST'] = 'mysql-15e12385-nimalyd20-bfe1.j.aivencloud.com'
 app.config['MYSQL_PORT'] = 16657
 app.config['MYSQL_USER'] = 'avnadmin'
 app.config['MYSQL_PASSWORD'] = 'AVNS_akVQBE4Ujva0j3Kbjw4'
-app.config['MYSQL_DB'] = 'defaultdb' # Updated Database Name
+app.config['MYSQL_DB'] = 'defaultdb'
 
 mysql = MySQL(app)
 
@@ -75,19 +75,14 @@ def register():
 def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
     view = request.args.get('view', 'listings')
     user_id = session['user_id']
     cur = mysql.connection.cursor()
-
-    # 1. Logic for DONORS (Pharmacies)
     if session['role'] == 'donor':
         cur.execute("SELECT impact_points FROM users WHERE id = %s", [user_id])
         points_data = cur.fetchone()
         points = points_data[0] if points_data else 0
-
         my_meds, pickups, messages = [], [], []
-        
         if view == 'listings':
             now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             cur.execute("""
@@ -121,7 +116,6 @@ def dashboard():
         return render_template('donor_dashboard.html', points=points, food=my_meds, 
                                pickups=pickups, messages=messages, current_view=view)
 
-    # 2. Logic for RECIPIENTS (Clinics)
     else:
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cur.execute("""
