@@ -1,4 +1,3 @@
-MedBridge 🏥
 MedBridge is a full-stack healthcare web application designed to optimize patient data management and improve digital medical accessibility. It features dynamic templates and robust backend logic to streamline clinical workflows and data tracking. 💻✨
 
 Features 🚀
